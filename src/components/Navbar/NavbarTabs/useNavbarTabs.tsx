@@ -9,6 +9,7 @@ import {
   TrackingEventParameter,
 } from 'src/const';
 import { useUserTracking } from 'src/hooks';
+import { trackServerSideEvent } from 'src/services/serverSideEventsTracking';
 import { EventTrackingTool } from 'src/types';
 
 export const useNavbarTabs = () => {
@@ -19,6 +20,12 @@ export const useNavbarTabs = () => {
   const handleClickTab =
     (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
       window.history.replaceState(null, document.title, `/${tab}`);
+
+      trackServerSideEvent({
+        name: `${TrackingCategory.Navigation}.${TrackingAction.SwitchTab}.switch_tab_to_${tab}`,
+        data: { [TrackingEventParameter.Tab]: tab },
+      });
+
       trackEvent({
         category: TrackingCategory.Navigation,
         action: TrackingAction.SwitchTab,
