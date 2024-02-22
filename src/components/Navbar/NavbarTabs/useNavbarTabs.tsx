@@ -21,11 +21,6 @@ export const useNavbarTabs = () => {
     (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
       window.history.replaceState(null, document.title, `/${tab}`);
 
-      trackServerSideEvent({
-        name: `${TrackingCategory.Navigation}.${TrackingAction.SwitchTab}.switch_tab_to_${tab}`,
-        data: { [TrackingEventParameter.Tab]: tab },
-      });
-
       trackEvent({
         category: TrackingCategory.Navigation,
         action: TrackingAction.SwitchTab,
@@ -35,6 +30,15 @@ export const useNavbarTabs = () => {
           EventTrackingTool.ARCx,
           EventTrackingTool.Cookie3,
         ],
+      });
+
+      trackServerSideEvent({
+        name: `switch_tab_to_tab`,
+        data: {
+          category: TrackingCategory.Navigation,
+          action: TrackingAction.SwitchTab,
+          tab: tab,
+        },
       });
     };
 

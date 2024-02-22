@@ -122,8 +122,10 @@ export const useWalletSelectContent = () => {
             combinedWallet.evm?.name || combinedWallet.svm?.adapter.name;
 
           trackServerSideEvent({
-            name: `${TrackingCategory.WalletSelectMenu}.${TrackingAction.WalletSelect}.wallet_opened`,
+            name: `wallet_selected`,
             data: {
+              category: TrackingCategory.WalletSelectMenu,
+              action: TrackingAction.WalletSelect,
               wallet: name,
             },
           });

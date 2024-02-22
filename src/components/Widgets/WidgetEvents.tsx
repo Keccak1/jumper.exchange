@@ -72,8 +72,10 @@ export function WidgetEvents() {
         });
 
         trackServerSideEvent({
-          name: `${TrackingCategory.WidgetEvent}.${TrackingAction.OnRouteExecutionStarted}.execution_start`,
+          name: `execution_start`,
           data: {
+            category: TrackingCategory.WidgetEvent,
+            action: TrackingAction.OnRouteExecutionStarted,
             value: parseFloat(route.fromAmountUSD),
             ...commonData,
           },
@@ -133,8 +135,10 @@ export function WidgetEvents() {
           });
 
           trackServerSideEvent({
-            name: `${TrackingCategory.WidgetEvent}.${TrackingAction.OnRouteExecutionUpdated}.execution_update`,
+            name: `execution_update`,
             data: {
+              category: TrackingCategory.WidgetEvent,
+              action: TrackingAction.OnRouteExecutionUpdated,
               value: parseFloat(update.route.fromAmountUSD),
               ...commonData,
             },
@@ -167,8 +171,10 @@ export function WidgetEvents() {
         });
 
         trackServerSideEvent({
-          name: `${TrackingCategory.WidgetEvent}.${TrackingAction.OnRouteExecutionCompleted}.execution_success`,
+          name: `execution_success`,
           data: {
+            category: TrackingCategory.WidgetEvent,
+            action: TrackingAction.OnRouteExecutionCompleted,
             value: parseFloat(route.fromAmountUSD),
             ...commonData,
           },
@@ -177,7 +183,7 @@ export function WidgetEvents() {
     };
 
     const onRouteExecutionFailed = async (update: RouteExecutionUpdate) => {
-      const data = {
+      const commonData = {
         [TrackingEventParameter.RouteId]: update.route.id,
         [TrackingEventParameter.TxHash]: update.process.txHash,
         [TrackingEventParameter.Status]: update.process.status,
@@ -191,17 +197,21 @@ export function WidgetEvents() {
         category: TrackingCategory.WidgetEvent,
         action: TrackingAction.OnRouteExecutionFailed,
         label: 'execution_error',
-        data,
+        data: commonData,
       });
 
       trackServerSideEvent({
         name: `${TrackingCategory.WidgetEvent}.${TrackingAction.OnRouteExecutionFailed}.execution_error`,
-        data,
+        data: {
+          category: TrackingCategory.WidgetEvent,
+          action: TrackingAction.OnRouteExecutionFailed,
+          ...commonData,
+        },
       });
     };
 
     const onRouteHighValueLoss = (update: RouteHighValueLossUpdate) => {
-      const data = {
+      const commonData = {
         [TrackingEventParameter.FromAmountUSD]: update.fromAmountUsd,
         [TrackingEventParameter.ToAmountUSD]: update.toAmountUSD,
         [TrackingEventParameter.GasCostUSD]: update.gasCostUSD,
@@ -213,12 +223,16 @@ export function WidgetEvents() {
         action: TrackingAction.OnRouteHighValueLoss,
         category: TrackingCategory.WidgetEvent,
         label: 'click_high_value_loss_accepted',
-        data,
+        data: commonData,
       });
 
       trackServerSideEvent({
         name: `${TrackingCategory.WidgetEvent}.${TrackingAction.OnRouteHighValueLoss}.click_high_value_loss_accepted`,
-        data,
+        data: {
+          category: TrackingCategory.WidgetEvent,
+          action: TrackingAction.OnRouteHighValueLoss,
+          ...commonData,
+        },
       });
     };
 
