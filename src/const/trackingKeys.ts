@@ -43,9 +43,6 @@ export enum TrackingAction {
   DownloadBrandAssets = 'action_dl_brand_assets',
 
   PoweredBy = 'action_click_powered_by',
-
-  // Server side
-  WalletSelect = 'action_wallet_select',
 }
 
 export enum TrackingCategory {
