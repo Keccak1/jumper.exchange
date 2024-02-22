@@ -8,9 +8,11 @@ import { Avatar, useMediaQuery, useTheme } from '@mui/material';
 import { WalletReadyState } from '@solana/wallet-adapter-base';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { TrackingAction, TrackingCategory } from 'src/const';
 import { useAccountConnect } from 'src/hooks/useAccounts';
 import type { CombinedWallet } from 'src/hooks/useCombinedWallets';
 import { useCombinedWallets } from 'src/hooks/useCombinedWallets';
+import { trackServerSideEvent } from 'src/services/serverSideEventsTracking';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { MenuListItem } from 'src/types';
 import { getContrastAlphaColor } from 'src/utils';
@@ -116,6 +118,18 @@ export const useWalletSelectContent = () => {
         ),
         showMoreIcon: false,
         onClick: () => {
+          const name =
+            combinedWallet.evm?.name || combinedWallet.svm?.adapter.name;
+
+          trackServerSideEvent({
+            name: `wallet_selected`,
+            data: {
+              category: TrackingCategory.WalletSelectMenu,
+              action: TrackingAction.WalletSelect,
+              wallet: name,
+            },
+          });
+
           handleWalletClick(combinedWallet);
         },
         styles: {
